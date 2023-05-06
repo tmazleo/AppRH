@@ -15,5 +15,5 @@ public interface CandidateRepository extends CrudRepository<Candidate, String> {
 
     Candidate findById(UUID id);
 
-    List<Candidate> findByNameCandidate(String nameCandidate);
+    List<Candidate> findByCandidateName(String candidateName);
 }

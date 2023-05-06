@@ -76,4 +76,33 @@ public class OpportunityController {
         attributes.addFlashAttribute("message", "Candidate successfully added!");
         return "redirect:/{id}";
     }
+
+    @RequestMapping("/deletecand")
+    public String deleteCandidate(String rg) {
+        Candidate candidate = cr.findByRg(rg);
+        AppRhOpportunity opportunity = candidate.getOpportunity();
+        String id = "" + opportunity.getId();
+        cr.delete(candidate);
+
+        return "redirect:/" + id;
+    }
+
+    //edição da vaga
+    @RequestMapping(value = "edit-opportunity", method = RequestMethod.GET)
+    public ModelAndView editOpportunity(UUID id) {
+        AppRhOpportunity opportunity = opr.findById(id);
+        ModelAndView mv = new ModelAndView("opportunity/updateop");
+        mv.addObject("opportunity", opportunity);
+        return mv;
+    }
+
+    //atualização da vaga
+    @RequestMapping(value = "/edit-opportunity", method = RequestMethod.POST)
+    public String updateOpportunity(@Valid AppRhOpportunity opportunity, BindingResult result, RedirectAttributes attributes) {
+        opr.save(opportunity);
+        attributes.addFlashAttribute("success", "Opportunity successfully update!");
+        UUID uuid = opportunity.getId();
+        String id = "" + uuid;
+        return "redirect:/" + uuid;
+    }
 }
